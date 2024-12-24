@@ -39,7 +39,6 @@ authRouter.post(
 
       // hashed pw
       const hashedPassword = await bcryptjs.hash(password, 8).catch((err) => {
-        console.error("Hashing error", err);
         throw new Error("Password hashing failed");
       });
       // create a new user and store in db
