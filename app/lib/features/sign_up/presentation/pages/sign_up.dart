@@ -63,79 +63,106 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Sign Up.",
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+        child: BlocConsumer<SignUpBloc, SignUpState>(
+          listener: (context, state) {
+            if (state is SignUpError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              AppTextInput(
-                controller: nameController,
-                hintText: "Full Name",
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              AppTextInput(
-                controller: emailController,
-                hintText: "Email Address",
-                validator: validateEmail,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              AppTextInput(
-                controller: passwordController,
-                hintText: "Password",
-                validator: validatePassword,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              AppPrimaryButton(
-                title: "Sign Up",
-                onTap: signup,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: "Already have an account? ",
+              );
+            }
+
+            if (state is SignUpSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                ),
+              );
+
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            }
+          },
+          builder: (context, state) {
+            return Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Sign Up.",
                     style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 19,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
                     ),
-                    children: [
-                      TextSpan(
-                        text: "Login",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  AppTextInput(
+                    controller: nameController,
+                    hintText: "Full Name",
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  AppTextInput(
+                    controller: emailController,
+                    hintText: "Email Address",
+                    validator: validateEmail,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  AppTextInput(
+                    controller: passwordController,
+                    hintText: "Password",
+                    validator: validatePassword,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  AppPrimaryButton(
+                    title: "Sign Up",
+                    onTap: signup,
+                    isLoading: state is SignUpLoading,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Already have an account? ",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 19,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Login",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

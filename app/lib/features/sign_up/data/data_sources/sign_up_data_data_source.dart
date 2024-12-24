@@ -29,9 +29,7 @@ class SignupDataDataSourceImpl implements SignUpDataDataSource {
         contentType: ContentType.json,
       );
 
-      log(response.toString());
-
-      return "";
+      return "Signed up successfully! Please login to continue";
     } catch (err, s) {
       log(err.toString() + s.toString());
       throw err.toString();

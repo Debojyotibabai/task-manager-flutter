@@ -38,15 +38,19 @@ class AppPrimaryButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: textColor,
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-          textAlign: TextAlign.center,
-        ),
+        child: isLoading!
+            ? CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : Text(
+                title,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ),
       ),
     );
   }
