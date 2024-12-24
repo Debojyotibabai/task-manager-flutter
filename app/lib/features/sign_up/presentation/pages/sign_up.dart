@@ -1,8 +1,10 @@
 import 'package:app/features/login/presentation/pages/login_page.dart';
+import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:app/shared/button/app_primary_button.dart';
 import 'package:app/shared/text_input/app_text_input.dart';
 import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -45,7 +47,15 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void signup() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<SignUpBloc>(context).add(
+        SignUp(
+          name: nameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
+    }
   }
 
   @override
