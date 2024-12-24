@@ -26,6 +26,7 @@ class SignupDataDataSourceImpl implements SignUpDataDataSource {
           "email": email,
           "password": password,
         },
+        contentType: ContentType.json,
       );
 
       log(response.toString());

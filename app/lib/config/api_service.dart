@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -87,6 +89,7 @@ class APIService {
           );
       }
     } on DioException catch (e) {
+      log(e.toString());
       throw e.response?.data["message"];
     } catch (e) {
       throw e.toString();
