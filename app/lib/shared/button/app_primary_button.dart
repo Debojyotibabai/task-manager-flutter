@@ -28,7 +28,7 @@ class AppPrimaryButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: !isDisabled! || !isLoading! ? onTap ?? () {} : null,
+        onPressed: !isDisabled! ? onTap ?? () {} : null,
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(backgroundColor),
           padding: WidgetStateProperty.all(EdgeInsets.all(18)),

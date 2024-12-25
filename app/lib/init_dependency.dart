@@ -1,3 +1,8 @@
+import 'package:app/features/login/data/data_sources/login_data_source.dart';
+import 'package:app/features/login/data/repositories/login_repository_impl.dart';
+import 'package:app/features/login/domain/respositories/login_repository.dart';
+import 'package:app/features/login/domain/use_cases/login_use_case.dart';
+import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/data/data_sources/sign_up_data_data_source.dart';
 import 'package:app/features/sign_up/data/repositories/sign_up_repository_impl.dart';
 import 'package:app/features/sign_up/domain/repositories/sign_up_repository.dart';
@@ -9,6 +14,7 @@ GetIt getIt = GetIt.instance;
 
 void initDependency() {
   _initSignUpDependency();
+  _initLoginDependency();
 }
 
 void _initSignUpDependency() {
@@ -24,5 +30,21 @@ void _initSignUpDependency() {
     )
     ..registerLazySingleton(
       () => SignUpBloc(signUpUseCase: getIt()),
+    );
+}
+
+void _initLoginDependency() {
+  getIt
+    ..registerFactory<LoginDataSource>(
+      () => LoginDataSourceImpl(),
+    )
+    ..registerFactory<LoginRepository>(
+      () => LoginRepositoryImpl(loginDataSourceImpl: getIt()),
+    )
+    ..registerFactory(
+      () => LoginUseCase(loginRepositoryImpl: getIt()),
+    )
+    ..registerLazySingleton(
+      () => LoginBloc(loginUseCase: getIt()),
     );
 }

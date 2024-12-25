@@ -1,8 +1,11 @@
+import 'package:app/features/home/presentation/pages/home_page.dart';
+import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/pages/sign_up.dart';
 import 'package:app/shared/button/app_primary_button.dart';
 import 'package:app/shared/text_input/app_text_input.dart';
 import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,7 +37,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<LoginBloc>(context).add(
+        Login(
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
+    }
   }
 
   @override
@@ -42,71 +52,96 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Login.",
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+        child: BlocConsumer<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              AppTextInput(
-                controller: emailController,
-                hintText: "Email Address",
-                validator: validateEmail,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              AppTextInput(
-                controller: passwordController,
-                hintText: "Password",
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              AppPrimaryButton(
-                title: "Login",
-                onTap: login,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const SignupPage()),
-                  );
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: "Don't have an account? ",
+              );
+            }
+
+            if (state is LoginSuccess) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+                (route) => false,
+              );
+            }
+          },
+          builder: (context, state) {
+            return Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Login.",
                     style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 19,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
                     ),
-                    children: [
-                      TextSpan(
-                        text: "Sign Up",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  AppTextInput(
+                    controller: emailController,
+                    hintText: "Email Address",
+                    validator: validateEmail,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  AppTextInput(
+                    controller: passwordController,
+                    hintText: "Password",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  AppPrimaryButton(
+                    title: "Login",
+                    onTap: login,
+                    isLoading: state is LoginLoading,
+                    isDisabled: state is LoginLoading,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const SignupPage()),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 19,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Sign Up",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

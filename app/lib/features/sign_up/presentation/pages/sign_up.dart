@@ -129,6 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                     title: "Sign Up",
                     onTap: signup,
                     isLoading: state is SignUpLoading,
+                    isDisabled: state is SignUpLoading,
                   ),
                   SizedBox(
                     height: 20,
