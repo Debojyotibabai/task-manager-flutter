@@ -1,4 +1,5 @@
 import 'package:app/features/home/presentation/widgets/calendar.dart';
+import 'package:app/features/home/presentation/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
@@ -29,8 +31,16 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Calendar(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) => TaskCard(),
+              ),
+            ),
           ],
         ),
       ),

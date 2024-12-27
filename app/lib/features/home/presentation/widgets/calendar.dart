@@ -30,7 +30,7 @@ class _CalendarState extends State<Calendar> {
 
     for (int i = 1; i <= totalDays; i++) {
       DateTime currentDate = DateTime(now.year, selectedMonth!, i);
-      String weekday = DateFormat('E').format(currentDate).toLowerCase();
+      String weekday = DateFormat('E').format(currentDate);
       result.add({weekday: i});
     }
 
