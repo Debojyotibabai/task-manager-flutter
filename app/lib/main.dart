@@ -1,3 +1,4 @@
+import 'package:app/features/home/presentation/pages/home_page.dart';
 import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:app/features/splash/presentation/pages/splash_page.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const SplashPage(),
+      home: const HomePage(),
     );
   }
 }

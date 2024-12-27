@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -16,10 +17,14 @@ class APIService {
 
   String get baseUrl {
     if (kDebugMode) {
-      return 'http://localhost:8000/';
+      return Platform.isAndroid
+          ? 'http://10.0.2.2:8000/'
+          : 'http://localhost:8000/';
     }
 
-    return 'http://localhost:8000/';
+    return Platform.isAndroid
+        ? 'http://10.0.2.2:8000/'
+        : 'http://localhost:8000/';
   }
 
   String getContentType(ContentType type) {
