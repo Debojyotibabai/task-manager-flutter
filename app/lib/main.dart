@@ -1,7 +1,6 @@
-import 'package:app/features/home/presentation/pages/home_page.dart';
+import 'package:app/features/add_task/presentation/pages/add_task.dart';
 import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
-import 'package:app/features/splash/presentation/pages/splash_page.dart';
 import 'package:app/init_dependency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +42,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const HomePage(),
+      home: const AddTask(),
     );
   }
 }

@@ -11,6 +11,8 @@ class AppTextInput extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.enabled = true,
     this.validator,
+    this.maxLines = 1,
+    this.required = true,
   });
 
   final TextEditingController controller;
@@ -21,6 +23,8 @@ class AppTextInput extends StatelessWidget {
   final TextInputType keyboardType;
   final bool? enabled;
   final String? Function(String?)? validator;
+  final int? maxLines;
+  final bool? required;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class AppTextInput extends StatelessWidget {
         obscureText: obscureText!,
         keyboardType: keyboardType,
         enabled: enabled!,
+        maxLines: maxLines,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         style: TextStyle(
           color: Colors.black,
@@ -87,13 +92,15 @@ class AppTextInput extends StatelessWidget {
             ),
           ),
         ),
-        validator: validator ??
-            (value) {
-              if (value == null || value.isEmpty) {
-                return "$hintText is required".toLowerCase();
-              }
-              return null;
-            },
+        validator: required!
+            ? validator ??
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return "$hintText is required".toLowerCase();
+                  }
+                  return null;
+                }
+            : null,
       ),
     );
   }

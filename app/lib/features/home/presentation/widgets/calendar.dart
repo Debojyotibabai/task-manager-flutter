@@ -58,6 +58,7 @@ class _CalendarState extends State<Calendar> {
               icon: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,
+                size: 25,
               ),
             ),
             Text(
@@ -81,6 +82,7 @@ class _CalendarState extends State<Calendar> {
               icon: Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.black,
+                size: 25,
               ),
             ),
           ],
