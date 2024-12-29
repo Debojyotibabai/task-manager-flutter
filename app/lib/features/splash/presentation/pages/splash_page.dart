@@ -14,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> checkTokenAvailable() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final token = await prefs.getString("token");
+    final token = prefs.getString("token");
 
     if (token != null) {
       Navigator.of(context).pushAndRemoveUntil(
