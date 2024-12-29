@@ -1,4 +1,4 @@
-import 'package:app/features/add_task/presentation/pages/add_task.dart';
+import 'package:app/features/add_task/presentation/pages/add_task_page.dart';
 import 'package:app/features/home/presentation/widgets/calendar.dart';
 import 'package:app/features/home/presentation/widgets/task_card.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AddTask(),
+                  builder: (context) => AddTaskPage(),
                 ),
               );
             },

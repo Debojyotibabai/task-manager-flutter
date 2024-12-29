@@ -12,7 +12,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   Future<void> checkTokenAvailable() async {
-    final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final token = await prefs.getString("token");
 

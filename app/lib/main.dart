@@ -1,6 +1,7 @@
-import 'package:app/features/add_task/presentation/pages/add_task.dart';
+import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
 import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
+import 'package:app/features/splash/presentation/pages/splash_page.dart';
 import 'package:app/init_dependency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,11 @@ void main() {
             loginUseCase: getIt(),
           ),
         ),
+        BlocProvider<AddTaskBloc>(
+          create: (BuildContext context) => AddTaskBloc(
+            addTaskUseCase: getIt(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -42,7 +48,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const AddTask(),
+      home: const SplashPage(),
     );
   }
 }

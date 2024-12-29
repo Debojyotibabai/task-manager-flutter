@@ -30,7 +30,7 @@ class LoginDataSourceImpl implements LoginDataSource {
 
       final data = LoginDataModel.fromMap(response.data);
 
-      final SharedPreferencesAsync prefs = SharedPreferencesAsync();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       await prefs.setString("token", data.token.toString());
 

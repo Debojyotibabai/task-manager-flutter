@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -50,6 +49,7 @@ class APIService {
   }) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+
       final token = prefs.getString("token");
 
       final dio = Dio(
@@ -57,7 +57,7 @@ class APIService {
           baseUrl: baseUrl,
           contentType: getContentType(contentType),
           headers: {
-            'authorization': 'Bearer $token',
+            'x-auth-token': token,
           },
         ),
       );
@@ -95,6 +95,7 @@ class APIService {
           );
       }
     } on DioException catch (e) {
+      print(e);
       throw e.response!.data["message"];
     } catch (e) {
       throw e.toString();

@@ -1,18 +1,20 @@
+import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
 import 'package:app/shared/button/app_primary_button.dart';
 import 'package:app/shared/text_input/app_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 
-class AddTask extends StatefulWidget {
-  const AddTask({super.key});
+class AddTaskPage extends StatefulWidget {
+  const AddTaskPage({super.key});
 
   @override
-  State<AddTask> createState() => _AddTaskState();
+  State<AddTaskPage> createState() => _AddTaskPageState();
 }
 
-class _AddTaskState extends State<AddTask> {
+class _AddTaskPageState extends State<AddTaskPage> {
   DateTime selectedTime = DateTime.now().add(Duration(hours: 1));
 
   final TextEditingController titleController = TextEditingController();
@@ -22,8 +24,25 @@ class _AddTaskState extends State<AddTask> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   Future<void> addTask() async {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<AddTaskBloc>(context).add(
+        AddTask(
+          title: titleController.text,
+          description: descriptionController.text,
+          hexColor:
+              '#${selectedColor!.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}',
+          dueAt: selectedTime.toString(),
+        ),
+      );
+    }
   }
 
   @override
@@ -133,9 +152,38 @@ class _AddTaskState extends State<AddTask> {
                   },
                 ),
                 SizedBox(height: 50),
-                AppPrimaryButton(
-                  title: "Submit",
-                  onTap: addTask,
+                BlocConsumer<AddTaskBloc, AddTaskState>(
+                  listener: (context, state) {
+                    if (state is AddTaskSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                          ),
+                        ),
+                      );
+
+                      Navigator.pop(context);
+                    }
+
+                    if (state is AddTaskError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            state.message,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return AppPrimaryButton(
+                      title: "Submit",
+                      onTap: addTask,
+                      isLoading: state is AddTaskLoading,
+                      isDisabled: state is AddTaskLoading,
+                    );
+                  },
                 ),
                 SizedBox(height: 40),
               ],

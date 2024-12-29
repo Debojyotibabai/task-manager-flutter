@@ -12,7 +12,7 @@ class TaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.63,
+            width: MediaQuery.of(context).size.width * 0.64,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Colors.orange[100],
