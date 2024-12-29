@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum DioMethod { post, get, put, patch, delete }
 
@@ -48,16 +49,16 @@ class APIService {
     formData,
   }) async {
     try {
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
-      // final token = prefs.getString("token");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
 
       final dio = Dio(
         BaseOptions(
           baseUrl: baseUrl,
           contentType: getContentType(contentType),
-          // headers: {
-          //   'authorization': 'Bearer $token',
-          // },
+          headers: {
+            'authorization': 'Bearer $token',
+          },
         ),
       );
 

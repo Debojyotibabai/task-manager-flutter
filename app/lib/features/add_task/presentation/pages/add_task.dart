@@ -2,6 +2,8 @@ import 'package:app/shared/button/app_primary_button.dart';
 import 'package:app/shared/text_input/app_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:intl/intl.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -11,15 +13,17 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
+  DateTime selectedTime = DateTime.now().add(Duration(hours: 1));
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+  Color? selectedColor = Colors.orange[100];
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<void> addTask() async {
-    if (formKey.currentState!.validate()) {
-      print("......");
-    }
+    if (formKey.currentState!.validate()) {}
   }
 
   @override
@@ -45,10 +49,29 @@ class _AddTaskState extends State<AddTask> {
           ),
         ),
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
+          TextButton(
+            onPressed: () {
+              DatePicker.showTime12hPicker(context, showTitleActions: true,
+                  onConfirm: (time) {
+                if (time.isBefore(DateTime.now())) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "You can't select a time in the past",
+                      ),
+                    ),
+                  );
+
+                  return;
+                }
+
+                setState(() {
+                  selectedTime = time;
+                });
+              }, locale: LocaleType.en);
+            },
             child: Text(
-              "12-09-2024",
+              DateFormat('dd-MM-yyyy').format(DateTime.now()),
               style: TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w600,
@@ -80,14 +103,16 @@ class _AddTaskState extends State<AddTask> {
                   required: false,
                 ),
                 ColorPicker(
+                  color: selectedColor!,
                   onColorChanged: (Color color) {
-                    print(color);
+                    setState(() {
+                      selectedColor = color;
+                    });
                   },
                   width: 44,
                   height: 44,
-                  borderRadius: 22,
                   heading: Text(
-                    'Select color',
+                    'Select card color',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -95,7 +120,7 @@ class _AddTaskState extends State<AddTask> {
                     ),
                   ),
                   subheading: Text(
-                    'Select color shade',
+                    'Choose color shade',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
