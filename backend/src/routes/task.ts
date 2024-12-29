@@ -15,6 +15,7 @@ taskRouter.post("/", auth, async (req: AuthRequest, res) => {
 
     res.status(201).json(task);
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e });
   }
 });
