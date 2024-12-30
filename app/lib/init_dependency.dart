@@ -3,6 +3,11 @@ import 'package:app/features/add_task/data/repositories/add_task_repository_impl
 import 'package:app/features/add_task/domain/repositories/add_task_repository.dart';
 import 'package:app/features/add_task/domain/use_cases/add_task_use_case.dart';
 import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
+import 'package:app/features/home/data/data_sources/task_data_source.dart';
+import 'package:app/features/home/data/repositories/task_repository_impl.dart';
+import 'package:app/features/home/domain/repositories/task_repository.dart';
+import 'package:app/features/home/domain/user_cases/get_all_task_use_case.dart';
+import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
 import 'package:app/features/login/data/data_sources/login_data_source.dart';
 import 'package:app/features/login/data/repositories/login_repository_impl.dart';
 import 'package:app/features/login/domain/respositories/login_repository.dart';
@@ -21,6 +26,7 @@ void initDependency() {
   _initSignUpDependency();
   _initLoginDependency();
   _initAddTaskDependency();
+  _getAllTaskDependency();
 }
 
 void _initSignUpDependency() {
@@ -68,5 +74,21 @@ void _initAddTaskDependency() {
     )
     ..registerLazySingleton(
       () => AddTaskBloc(addTaskUseCase: getIt()),
+    );
+}
+
+void _getAllTaskDependency() {
+  getIt
+    ..registerFactory<TaskDataSource>(
+      () => TaskDataSourceImpl(),
+    )
+    ..registerFactory<TaskRepository>(
+      () => TaskRepositoryImpl(taskDataSourceImpl: getIt()),
+    )
+    ..registerFactory(
+      () => GetAllTaskUseCase(taskRepositoryImpl: getIt()),
+    )
+    ..registerLazySingleton(
+      () => AllTaskBloc(getAllTaskUseCase: getIt()),
     );
 }

@@ -16,7 +16,7 @@ taskRouter.post("/", auth, async (req: AuthRequest, res) => {
     res.status(201).json(task);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ error: e });
+    res.status(500).json({ message: e });
   }
 });
 
@@ -29,7 +29,7 @@ taskRouter.get("/", auth, async (req: AuthRequest, res) => {
 
     res.json(allTasks);
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({ message: e });
   }
 });
 
@@ -40,7 +40,7 @@ taskRouter.delete("/", auth, async (req: AuthRequest, res) => {
 
     res.json(true);
   } catch (e) {
-    res.status(500).json({ error: e });
+    res.status(500).json({ message: e });
   }
 });
 
@@ -70,7 +70,7 @@ taskRouter.post("/sync", auth, async (req: AuthRequest, res) => {
     res.status(201).json(pushedTasks);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ error: e });
+    res.status(500).json({ message: e });
   }
 });
 

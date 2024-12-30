@@ -1,4 +1,5 @@
 import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
+import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
 import 'package:app/shared/button/app_primary_button.dart';
 import 'package:app/shared/text_input/app_text_input.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  DateTime selectedTime = DateTime.now().add(Duration(hours: 1));
+  DateTime selectedTime = DateTime.now();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -32,6 +33,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> addTask() async {
+    print(selectedTime.toIso8601String());
     if (formKey.currentState!.validate()) {
       BlocProvider.of<AddTaskBloc>(context).add(
         AddTask(
@@ -39,7 +41,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           description: descriptionController.text,
           hexColor:
               '#${selectedColor!.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}',
-          dueAt: selectedTime.toString(),
+          dueAt: selectedTime.toIso8601String(),
         ),
       );
     }
@@ -70,8 +72,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
         actions: [
           TextButton(
             onPressed: () {
-              DatePicker.showTime12hPicker(context, showTitleActions: true,
-                  onConfirm: (time) {
+              DatePicker.showDateTimePicker(context,
+                  showTitleActions: true,
+                  minTime: DateTime.now(), onConfirm: (time) {
                 if (time.isBefore(DateTime.now())) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -162,6 +165,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ),
                       );
+
+                      BlocProvider.of<AllTaskBloc>(context)
+                          .add(GetAllTaskEvent());
 
                       Navigator.pop(context);
                     }

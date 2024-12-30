@@ -1,4 +1,5 @@
 import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
+import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
 import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:app/features/splash/presentation/pages/splash_page.dart';
@@ -27,6 +28,11 @@ void main() {
         BlocProvider<AddTaskBloc>(
           create: (BuildContext context) => AddTaskBloc(
             addTaskUseCase: getIt(),
+          ),
+        ),
+        BlocProvider<AllTaskBloc>(
+          create: (BuildContext context) => AllTaskBloc(
+            getAllTaskUseCase: getIt(),
           ),
         ),
       ],

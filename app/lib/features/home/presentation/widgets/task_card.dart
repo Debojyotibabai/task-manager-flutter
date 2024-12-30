@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final String? id;
+  final String? title;
+  final String? description;
+  final String? hexColor;
+  final DateTime? dueAt;
+  final DateTime? createdAt;
+
+  const TaskCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.hexColor,
+    required this.dueAt,
+    required this.createdAt,
+  });
+
+  Color getColorFromHex(String color) {
+    color = color.replaceAll("#", "");
+    if (color.length == 6) {
+      color = "FF$color";
+    }
+    return Color(int.parse("0x$color"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +36,10 @@ class TaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.64,
+            width: MediaQuery.of(context).size.width * 0.60,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: Colors.orange[100],
+              color: getColorFromHex(hexColor!),
               borderRadius: BorderRadius.circular(13),
             ),
             child: Column(
@@ -23,25 +47,31 @@ class TaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Hello!",
+                  title!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
-                    color: Colors.black,
-                  ),
-                ),
+                description != ""
+                    ? Column(
+                        children: [
+                          SizedBox(height: 5),
+                          Text(
+                            description!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 SizedBox(height: 20),
                 Text(
-                  "10:00AM - 11:00AM",
+                  "${DateFormat('hh:mma').format(dueAt!)} - ${DateFormat('hh:mma').format(dueAt!.add(Duration(hours: 1)))}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -63,17 +93,28 @@ class TaskCard extends StatelessWidget {
                   color: Colors.black45,
                 ),
               ),
-              SizedBox(width: 5),
-              Container(
-                margin: EdgeInsets.only(top: 3),
-                child: Text(
-                  "10:00AM",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.black,
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    DateFormat("dd-MM-yyyy").format(createdAt!.toLocal()),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
+                  Text(
+                    DateFormat("hh:mma").format(createdAt!.toLocal()),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
