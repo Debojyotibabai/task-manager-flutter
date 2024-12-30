@@ -1,5 +1,7 @@
+import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
 import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class Calendar extends StatefulWidget {
@@ -19,6 +21,8 @@ class _CalendarState extends State<Calendar> {
     selectedMonth = DateTime.now().month;
     datesWithWeekdays = getDatesWithWeekdays();
     selectedDate = DateTime.now().day;
+
+    BlocProvider.of<AllTaskBloc>(context).add(GetAllTaskEvent());
 
     super.initState();
   }
@@ -51,7 +55,11 @@ class _CalendarState extends State<Calendar> {
                   setState(() {
                     selectedMonth = selectedMonth! - 1;
                     datesWithWeekdays = getDatesWithWeekdays();
-                    selectedDate = null;
+                    if (selectedMonth == DateTime.now().month) {
+                      selectedDate = DateTime.now().day;
+                    } else {
+                      selectedDate = 1;
+                    }
                   });
                 }
               },
@@ -75,7 +83,11 @@ class _CalendarState extends State<Calendar> {
                   setState(() {
                     selectedMonth = selectedMonth! + 1;
                     datesWithWeekdays = getDatesWithWeekdays();
-                    selectedDate = null;
+                    if (selectedMonth == DateTime.now().month) {
+                      selectedDate = DateTime.now().day;
+                    } else {
+                      selectedDate = 1;
+                    }
                   });
                 }
               },
