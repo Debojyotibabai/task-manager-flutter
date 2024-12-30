@@ -41,6 +41,24 @@ class _CalendarState extends State<Calendar> {
     return result;
   }
 
+  void changeMonth(String type) {
+    setState(() {
+      if (type == "previous") {
+        selectedMonth = selectedMonth! - 1;
+      } else if (type == "next") {
+        selectedMonth = selectedMonth! + 1;
+      }
+
+      datesWithWeekdays = getDatesWithWeekdays();
+
+      if (selectedMonth == DateTime.now().month) {
+        selectedDate = DateTime.now().day;
+      } else {
+        selectedDate = 1;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,15 +70,7 @@ class _CalendarState extends State<Calendar> {
             IconButton(
               onPressed: () {
                 if (selectedMonth! > 1) {
-                  setState(() {
-                    selectedMonth = selectedMonth! - 1;
-                    datesWithWeekdays = getDatesWithWeekdays();
-                    if (selectedMonth == DateTime.now().month) {
-                      selectedDate = DateTime.now().day;
-                    } else {
-                      selectedDate = 1;
-                    }
-                  });
+                  changeMonth("previous");
                 }
               },
               icon: Icon(
@@ -80,15 +90,7 @@ class _CalendarState extends State<Calendar> {
             IconButton(
               onPressed: () {
                 if (selectedMonth! < 12) {
-                  setState(() {
-                    selectedMonth = selectedMonth! + 1;
-                    datesWithWeekdays = getDatesWithWeekdays();
-                    if (selectedMonth == DateTime.now().month) {
-                      selectedDate = DateTime.now().day;
-                    } else {
-                      selectedDate = 1;
-                    }
-                  });
+                  changeMonth("next");
                 }
               },
               icon: Icon(
