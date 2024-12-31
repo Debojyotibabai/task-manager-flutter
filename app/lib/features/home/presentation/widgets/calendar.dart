@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
 import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,29 @@ class _CalendarState extends State<Calendar> {
   List<Map<String, int>> datesWithWeekdays = [];
   int? selectedDate;
 
+  void getAllTasks() {
+    int year = DateTime.now().year;
+
+    String date = DateFormat('yyyy-MM-dd').format(
+      DateTime(
+        year,
+        selectedMonth!,
+        selectedDate!,
+      ),
+    );
+
+    BlocProvider.of<AllTaskBloc>(context).add(GetAllTaskEvent(date: date));
+  }
+
   @override
   void initState() {
+    log("=======");
+
     selectedMonth = DateTime.now().month;
     datesWithWeekdays = getDatesWithWeekdays();
     selectedDate = DateTime.now().day;
 
-    BlocProvider.of<AllTaskBloc>(context).add(GetAllTaskEvent());
+    getAllTasks();
 
     super.initState();
   }
@@ -57,6 +75,8 @@ class _CalendarState extends State<Calendar> {
         selectedDate = 1;
       }
     });
+
+    getAllTasks();
   }
 
   @override
@@ -113,6 +133,8 @@ class _CalendarState extends State<Calendar> {
                   setState(() {
                     selectedDate = datesWithWeekdays[index].values.first;
                   });
+
+                  getAllTasks();
                 },
                 child: Container(
                   width: 80,

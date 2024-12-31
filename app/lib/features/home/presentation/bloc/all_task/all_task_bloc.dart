@@ -1,6 +1,7 @@
 import 'package:app/features/home/domain/entities/task_data_entity.dart';
 import 'package:app/features/home/domain/user_cases/get_all_task_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 part 'all_task_event.dart';
@@ -19,7 +20,16 @@ class AllTaskBloc extends Bloc<AllTaskEvent, AllTaskState> {
 
       response.fold(
         (err) => emit(AllTaskError(message: err.message)),
-        (res) => emit(AllTaskSuccess(tasks: res)),
+        (res) {
+          final filteredTasks = res.where(
+            (task) {
+              return DateFormat('yyyy-MM-dd').format(task.createdAt!) ==
+                  DateFormat('yyyy-MM-dd').format(DateTime.parse(event.date));
+            },
+          ).toList();
+
+          emit(AllTaskSuccess(tasks: filteredTasks));
+        },
       );
     });
   }

@@ -36,7 +36,7 @@ class TaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: MediaQuery.of(context).size.width * 0.64,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: getColorFromHex(hexColor!),
@@ -83,7 +83,7 @@ class TaskCard extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 "•",
@@ -93,28 +93,17 @@ class TaskCard extends StatelessWidget {
                   color: Colors.black45,
                 ),
               ),
-              SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    DateFormat("dd-MM-yyyy").format(createdAt!.toLocal()),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
+              SizedBox(width: 7),
+              Container(
+                margin: EdgeInsets.only(top: 4.5),
+                child: Text(
+                  DateFormat("hh:mma").format(createdAt!.toLocal()),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black87,
                   ),
-                  Text(
-                    DateFormat("hh:mma").format(createdAt!.toLocal()),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
