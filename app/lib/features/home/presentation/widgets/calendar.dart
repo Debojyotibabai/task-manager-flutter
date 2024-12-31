@@ -172,7 +172,7 @@ class _CalendarState extends State<Calendar> {
                                 : Colors.black,
                             fontSize: 17,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
