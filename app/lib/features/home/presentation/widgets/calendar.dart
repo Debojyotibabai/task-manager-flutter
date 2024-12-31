@@ -34,8 +34,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   void initState() {
-    log("=======");
-
     selectedMonth = DateTime.now().month;
     datesWithWeekdays = getDatesWithWeekdays();
     selectedDate = DateTime.now().day;
