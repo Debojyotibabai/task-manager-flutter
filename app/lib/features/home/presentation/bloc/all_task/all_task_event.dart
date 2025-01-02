@@ -10,3 +10,11 @@ final class GetAllTaskEvent extends AllTaskEvent {
     required this.date,
   });
 }
+
+final class UpdateTaskEvent extends AllTaskEvent {
+  final String id;
+
+  UpdateTaskEvent({
+    required this.id,
+  });
+}

@@ -13,24 +13,38 @@ class AllTaskBloc extends Bloc<AllTaskEvent, AllTaskState> {
   AllTaskBloc({
     required this.getAllTaskUseCase,
   }) : super(AllTaskInitial()) {
-    on<GetAllTaskEvent>((event, emit) async {
-      emit(AllTaskLoading());
+    on<GetAllTaskEvent>(
+      (event, emit) async {
+        emit(AllTaskLoading());
 
-      final response = await getAllTaskUseCase(GetAllTaskParams());
+        final response = await getAllTaskUseCase(GetAllTaskParams());
 
-      response.fold(
-        (err) => emit(AllTaskError(message: err.message)),
-        (res) {
-          final filteredTasks = res.where(
-            (task) {
-              return DateFormat('yyyy-MM-dd').format(task.createdAt!) ==
-                  DateFormat('yyyy-MM-dd').format(DateTime.parse(event.date));
-            },
-          ).toList();
+        response.fold(
+          (err) => emit(AllTaskError(message: err.message)),
+          (res) {
+            final filteredTasks = res.where(
+              (task) {
+                return DateFormat('yyyy-MM-dd').format(task.createdAt!) ==
+                    DateFormat('yyyy-MM-dd').format(DateTime.parse(event.date));
+              },
+            ).toList();
 
-          emit(AllTaskSuccess(tasks: filteredTasks));
-        },
-      );
-    });
+            emit(AllTaskSuccess(tasks: filteredTasks));
+          },
+        );
+      },
+    );
+
+    on<UpdateTaskEvent>(
+      (event, emit) {
+        final filteredTasks = (state as AllTaskSuccess).tasks.where(
+          (task) {
+            return task.id != event.id;
+          },
+        ).toList();
+
+        emit(AllTaskSuccess(tasks: filteredTasks));
+      },
+    );
   }
 }
