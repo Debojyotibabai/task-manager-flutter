@@ -6,10 +6,100 @@ import 'package:app/features/home/presentation/widgets/task_card.dart';
 import 'package:app/features/welcome/presentation/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int? selectedMonth;
+  int? selectedDate;
+  List<Map<String, int>> datesWithWeekdays = [];
+
+  void getAllTasks() {
+    int year = DateTime.now().year;
+
+    String date = DateFormat('yyyy-MM-dd').format(
+      DateTime(
+        year,
+        selectedMonth!,
+        selectedDate!,
+      ),
+    );
+
+    BlocProvider.of<AllTaskBloc>(context).add(GetAllTaskEvent(date: date));
+  }
+
+  @override
+  void initState() {
+    selectedMonth = DateTime.now().month;
+    selectedDate = DateTime.now().day;
+
+    datesWithWeekdays = getDatesWithWeekdays();
+
+    getAllTasks();
+
+    super.initState();
+  }
+
+  List<Map<String, int>> getDatesWithWeekdays() {
+    List<Map<String, int>> result = [];
+    DateTime now = DateTime.now();
+    int totalDays = DateTime(now.year, selectedMonth! + 1, 0).day;
+
+    for (int i = 1; i <= totalDays; i++) {
+      DateTime currentDate = DateTime(now.year, selectedMonth!, i);
+      String weekday = DateFormat('E').format(currentDate);
+      result.add({weekday: i});
+    }
+
+    return result;
+  }
+
+  void previousMonth() {
+    setState(() {
+      selectedMonth = selectedMonth! - 1;
+
+      datesWithWeekdays = getDatesWithWeekdays();
+
+      if (selectedMonth == DateTime.now().month) {
+        selectedDate = DateTime.now().day;
+      } else {
+        selectedDate = 1;
+      }
+    });
+
+    getAllTasks();
+  }
+
+  void nextMonth() {
+    setState(() {
+      selectedMonth = selectedMonth! + 1;
+
+      datesWithWeekdays = getDatesWithWeekdays();
+
+      if (selectedMonth == DateTime.now().month) {
+        selectedDate = DateTime.now().day;
+      } else {
+        selectedDate = 1;
+      }
+    });
+
+    getAllTasks();
+  }
+
+  void onDateSelect(int index) {
+    setState(() {
+      selectedDate = datesWithWeekdays[index].values.first;
+    });
+
+    getAllTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +155,16 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Calendar(),
+            Calendar(
+              selectedMonth: selectedMonth,
+              selectedDate: selectedDate,
+              datesWithWeekdays: datesWithWeekdays,
+              previousMonth: previousMonth,
+              nextMonth: nextMonth,
+              onDateSelect: (index) {
+                onDateSelect(index);
+              },
+            ),
             Expanded(
               child: BlocListener<DeleteTaskBloc, DeleteTaskState>(
                 listener: (context, state) {
@@ -75,6 +174,8 @@ class HomePage extends StatelessWidget {
                         content: Text(state.message),
                       ),
                     );
+
+                    getAllTasks();
                   }
 
                   if (state is DeleteTaskError) {
