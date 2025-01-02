@@ -4,4 +4,6 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class TaskRepository {
   Future<Either<Failure, List<TaskDataEntity>>> getAllTasks();
+
+  Future<Either<Failure, String>> deleteTask({required String id});
 }

@@ -8,6 +8,7 @@ class TaskCard extends StatelessWidget {
   final String? hexColor;
   final DateTime? dueAt;
   final DateTime? createdAt;
+  final Function() onDelete;
 
   const TaskCard({
     super.key,
@@ -17,6 +18,7 @@ class TaskCard extends StatelessWidget {
     required this.hexColor,
     required this.dueAt,
     required this.createdAt,
+    required this.onDelete,
   });
 
   Color getColorFromHex(String color) {
@@ -29,85 +31,103 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.64,
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: getColorFromHex(hexColor!),
-              borderRadius: BorderRadius.circular(13),
+    return Dismissible(
+      key: Key(id!),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        onDelete();
+      },
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: getColorFromHex(hexColor!),
+                borderRadius: BorderRadius.circular(13),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Colors.black,
+                    ),
+                  ),
+                  description != ""
+                      ? Column(
+                          children: [
+                            SizedBox(height: 5),
+                            Text(
+                              description!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  SizedBox(height: 20),
+                  Text(
+                    "${DateFormat('hh:mma').format(dueAt!)} - ${DateFormat('hh:mma').format(dueAt!.add(Duration(hours: 1)))}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  title!,
+                  "•",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
-                    color: Colors.black,
+                    fontSize: 35,
+                    color: Colors.black45,
                   ),
                 ),
-                description != ""
-                    ? Column(
-                        children: [
-                          SizedBox(height: 5),
-                          Text(
-                            description!,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                SizedBox(height: 20),
-                Text(
-                  "${DateFormat('hh:mma').format(dueAt!)} - ${DateFormat('hh:mma').format(dueAt!.add(Duration(hours: 1)))}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
+                SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      DateFormat("dd-MM-yyyy").format(createdAt!.toLocal()),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      DateFormat("hh:mma").format(createdAt!.toLocal()),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "•",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
-                  color: Colors.black45,
-                ),
-              ),
-              SizedBox(width: 7),
-              Container(
-                margin: EdgeInsets.only(top: 4.5),
-                child: Text(
-                  DateFormat("hh:mma").format(createdAt!.toLocal()),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

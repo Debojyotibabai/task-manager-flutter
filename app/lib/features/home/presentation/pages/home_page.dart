@@ -1,5 +1,6 @@
 import 'package:app/features/add_task/presentation/pages/add_task_page.dart';
 import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
+import 'package:app/features/home/presentation/bloc/delete_task/delete_task_bloc.dart';
 import 'package:app/features/home/presentation/widgets/calendar.dart';
 import 'package:app/features/home/presentation/widgets/task_card.dart';
 import 'package:app/features/welcome/presentation/pages/welcome_page.dart';
@@ -94,6 +95,11 @@ class HomePage extends StatelessWidget {
                           hexColor: state.tasks[index].hexColor,
                           dueAt: state.tasks[index].dueAt,
                           createdAt: state.tasks[index].createdAt,
+                          onDelete: () {
+                            BlocProvider.of<DeleteTaskBloc>(context).add(
+                              DeleteTask(id: state.tasks[index].id!),
+                            );
+                          },
                         ),
                       );
                     } else {

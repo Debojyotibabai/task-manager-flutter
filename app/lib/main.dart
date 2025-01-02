@@ -1,5 +1,6 @@
 import 'package:app/features/add_task/presentation/bloc/add_task/add_task_bloc.dart';
 import 'package:app/features/home/presentation/bloc/all_task/all_task_bloc.dart';
+import 'package:app/features/home/presentation/bloc/delete_task/delete_task_bloc.dart';
 import 'package:app/features/login/presentation/bloc/login/login_bloc.dart';
 import 'package:app/features/sign_up/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:app/features/splash/presentation/pages/splash_page.dart';
@@ -33,6 +34,11 @@ void main() {
         BlocProvider<AllTaskBloc>(
           create: (BuildContext context) => AllTaskBloc(
             getAllTaskUseCase: getIt(),
+          ),
+        ),
+        BlocProvider<DeleteTaskBloc>(
+          create: (BuildContext context) => DeleteTaskBloc(
+            deleteTaskUseCase: getIt(),
           ),
         ),
       ],

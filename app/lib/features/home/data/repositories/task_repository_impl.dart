@@ -20,4 +20,14 @@ class TaskRepositoryImpl implements TaskRepository {
       return left(Failure(message: err.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> deleteTask({required String id}) async {
+    try {
+      final response = await taskDataSourceImpl.deleteTask(id: id);
+      return right(response);
+    } catch (err) {
+      return left(Failure(message: err.toString()));
+    }
+  }
 }
