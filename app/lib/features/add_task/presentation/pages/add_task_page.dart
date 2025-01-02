@@ -8,7 +8,9 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
+  final Function() getAllTasks;
+
+  const AddTaskPage({super.key, required this.getAllTasks});
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -163,6 +165,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ),
                         ),
                       );
+
+                      widget.getAllTasks();
 
                       Navigator.pop(context);
                     }
