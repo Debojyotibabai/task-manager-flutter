@@ -24,7 +24,7 @@ class AllTaskBloc extends Bloc<AllTaskEvent, AllTaskState> {
           (res) {
             final filteredTasks = res.where(
               (task) {
-                return DateFormat('yyyy-MM-dd').format(task.createdAt!) ==
+                return DateFormat('yyyy-MM-dd').format(task.dueAt!) ==
                     DateFormat('yyyy-MM-dd').format(DateTime.parse(event.date));
               },
             ).toList();

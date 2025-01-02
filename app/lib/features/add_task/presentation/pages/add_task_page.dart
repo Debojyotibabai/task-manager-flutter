@@ -91,7 +91,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               }, locale: LocaleType.en);
             },
             child: Text(
-              DateFormat('dd-MM-yyyy').format(DateTime.now()),
+              DateFormat('dd-MM-yyyy').format(selectedTime),
               style: TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w600,
